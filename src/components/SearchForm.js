@@ -1,22 +1,14 @@
 import axios from "axios";
 import React, { useState } from "react";
+import { getSearchResults } from "../utils";
 
 import "./SearchForm.css";
 
-const GITHUB_SEARCH_API_URL = "https://api.github.com/search/repositories";
-
-function SearchForm({ setSearchResults }) {
-  const [searchTerm, setSearchTerm] = useState("");
-  const [page, setPage] = useState(1);
-
-  const handleSubmit = (event) => {
+function SearchForm({ page, searchTerm, setSearchTerm, setSearchResults }) {
+  const handleSubmit = async (event) => {
     event.preventDefault();
-    axios
-      .get(`${GITHUB_SEARCH_API_URL}?q=${searchTerm}&page=${page}`)
-      .then((response) => {
-        console.log(response.data);
-        setSearchResults(response.data);
-      });
+    const data = await getSearchResults(searchTerm, page);
+    setSearchResults(data);
   };
 
   return (

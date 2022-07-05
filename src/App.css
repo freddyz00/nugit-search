@@ -1,8 +1,26 @@
-.App {
+.app {
   margin: 0 auto;
   max-width: 768px;
 }
 
 h1 {
   font-weight: 500;
+}
+
+.app__pagination {
+  border-top: 1px solid lightgray;;
+  padding: 2rem 0;
+  text-align: center;
+}
+
+.app__pagination button {
+  padding: 0;
+  border: none;
+  background-color: white;
+  cursor: pointer;
+  color: #4040c4;
+}
+
+.app__pagination span {
+  margin: 0 2rem;
 }
