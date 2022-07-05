@@ -1,0 +1,29 @@
+.search-form {
+    width: 90%;
+    position: relative;
+    max-width: 500px;
+    padding: 0.25rem 0.75rem;
+    border-radius: 99px;
+    border: 1px solid lightgray
+}
+
+.search-form:focus-within {
+    border: 1px solid #4040c4
+}
+
+.search-form form {
+    display: flex;
+    flex: 1;
+}
+
+.search-form__input {
+    flex: 1;
+    outline-width: 0;
+    border: none;
+    padding: 0.5rem 0.25rem;
+    font-size: 1rem;
+}
+
+.search-form__button {
+   display: none;
+}
