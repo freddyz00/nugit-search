@@ -18,6 +18,7 @@
 
 .search-form__input {
     flex: 1;
+    outline: none;
     outline-width: 0;
     border: none;
     padding: 0.5rem 0.25rem;
@@ -26,4 +27,27 @@
 
 .search-form__button {
    display: none;
+}
+
+.search-form__suggestions {
+    position: absolute;
+    width: 100%;
+    top: 110%;
+    left: 0px;
+    margin: 0;
+    padding: 0;
+    border-radius: 5px;
+    background-color: white;
+    border: 1px solid lightgray;
+}
+
+.search-form__suggestions li {
+    cursor: pointer;
+    list-style: none;
+    padding: 0.5rem 1rem;
+ 
+}
+
+.search-form__suggestions li:hover,.search-form__suggestions--active   {
+    background-color: lightgray;
 }

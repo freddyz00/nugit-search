@@ -1,16 +1,26 @@
 import "./App.css";
 import { useEffect, useState } from "react";
-import SearchForm from "./components/SearchForm";
 import SearchResultItem from "./components/SearchResultItem";
+import AutocompleteSearchForm from "./components/AutocompleteSearchForm";
 import { getSearchResults } from "./utils";
+import axios from "axios";
 
 function App() {
   const [autoCompleteSuggestions, setAutoCompleteSuggestions] = useState([]);
-  const [searchResults, setSearchResults] = useState([]);
   const [searchTerm, setSearchTerm] = useState("");
+  const [searchResults, setSearchResults] = useState([]);
   const [page, setPage] = useState(1);
 
-  useEffect(() => {}, []);
+  useEffect(() => {
+    const fetchData = async () => {
+      const { data } = await axios.get(
+        "https://api.github.com/search/repositories?q=stars:>=500&per_page=100&sort=starsgazers_count&order=desc"
+      );
+      setAutoCompleteSuggestions(data.items.map((item) => item.name));
+    };
+    fetchData();
+    console.log(autoCompleteSuggestions);
+  }, []);
 
   useEffect(() => {
     if (searchTerm && page > 0) {
@@ -28,11 +38,12 @@ function App() {
       </header>
 
       <main>
-        {/* Search Form */}
-        <SearchForm
-          page={page}
+        {/* Autocomplete Search Form */}
+        <AutocompleteSearchForm
+          setPage={setPage}
           searchTerm={searchTerm}
           setSearchTerm={setSearchTerm}
+          autoCompleteSuggestions={autoCompleteSuggestions}
           setSearchResults={setSearchResults}
         />
 

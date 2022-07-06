@@ -16,7 +16,9 @@ function SearchResultItem({
           <span className="search-result-item__owner">{`${owner} / `}</span>
           <span className="search-result-item__name">{name}</span>
         </a>
-        <span className="search-result-item__language">{language}</span>
+        {language && (
+          <span className="search-result-item__language">{language}</span>
+        )}
       </h2>
       <p>{description}</p>
       <div className="search-result-item__topics">
