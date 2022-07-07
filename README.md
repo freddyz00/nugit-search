@@ -1,16 +1,17 @@
 ## Nugit Assignment
 
-This project utilizes the GitHub Search API that allows users to search for repositories on GitHub. It consists of an autocomplete form that automatically suggests related terms that matched the user input.
+This project utilizes the GitHub Search API that allows users to search for repositories on GitHub. It consists of an autocomplete form that automatically suggests related terms that match the user input.
 
 ![nugit-search](nugit-search.png)
 
 ### Running the application
 
-Clone the repository in the local workspace.
+Clone the repository in the local workspace and install the required packages.
 
 ```
 git clone https://www.github.com/freddyz00/nugit-assignment
 cd nugit-assignment
+npm install
 ```
 
 Run `npm start` to start the application on port 3000.

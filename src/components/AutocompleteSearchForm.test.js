@@ -13,6 +13,7 @@ describe("Autocomplete Search Form", () => {
   });
 
   it("shows suggestions list that matched user input and responds correctly to events", async () => {
+    // axios mock resolved value for autocomplete suggestions
     const response = {
       data: { items: [{ name: "react" }, { name: "redux" }] },
     };
@@ -26,24 +27,29 @@ describe("Autocomplete Search Form", () => {
       );
     });
 
+    // asserts no suggestions on initial render
     expect(screen.queryByTestId("suggestions")).not.toBeInTheDocument();
 
+    // shows matching suggestions when typing
     fireEvent.change(screen.getByRole("textbox"), { target: { value: "r" } });
     const suggestionsList = await screen.findByTestId("suggestions");
     expect(suggestionsList).not.toBeNull();
     expect(suggestionsList.children.length).toBe(2);
 
+    // press arrow down key and shows the selected item
     fireEvent.keyDown(screen.getByRole("textbox"), { keyCode: 40 });
     expect(screen.getAllByRole("listitem")[0]).toHaveClass(
       "search-form__suggestions--active"
     );
     expect(screen.getByRole("textbox")).toHaveValue("react");
 
+    // press the arrow up key and nothing changes if the selected item is the first in the list
     fireEvent.keyDown(screen.getByRole("textbox"), { keyCode: 38 });
     expect(screen.getAllByRole("listitem")[0]).toHaveClass(
       "search-form__suggestions--active"
     );
 
+    // press the arrow down key followed by arrow up key, should end up with the same selected item
     fireEvent.keyDown(screen.getByRole("textbox"), { keyCode: 40 });
     fireEvent.keyDown(screen.getByRole("textbox"), { keyCode: 38 });
     expect(screen.getAllByRole("listitem")[0]).toHaveClass(
@@ -51,17 +57,20 @@ describe("Autocomplete Search Form", () => {
     );
     expect(screen.getByRole("textbox")).toHaveValue("react");
 
+    // press the arrow down key and nothing changes if the selected item is the last in the list
     fireEvent.keyDown(screen.getByRole("textbox"), { keyCode: 40 });
     fireEvent.keyDown(screen.getByRole("textbox"), { keyCode: 40 });
     expect(screen.getAllByRole("listitem")[1]).toHaveClass(
       "search-form__suggestions--active"
     );
 
+    // press the escape key to hide the suggestions list
     fireEvent.keyDown(screen.getByRole("textbox"), { keyCode: 27 });
     expect(screen.queryByTestId("suggestions")).not.toBeInTheDocument();
   });
 
   it("handles form submission", async () => {
+    // axios mock resolved value for autocomplete suggestions
     let response = {
       data: { items: [{ name: "react" }, { name: "redux" }] },
     };
@@ -75,6 +84,7 @@ describe("Autocomplete Search Form", () => {
       );
     });
 
+    // change axios mock resolved value for searching
     response = {
       data: {
         total_count: 2,
@@ -104,24 +114,24 @@ describe("Autocomplete Search Form", () => {
     };
     axios.get.mockResolvedValue(response);
 
+    // type in "r" and click on the first item, should display results
     fireEvent.change(screen.getByRole("textbox"), { target: { value: "r" } });
     await act(() => {
       fireEvent.click(screen.getAllByRole("listitem")[0]);
     });
+    expect(await screen.findByTestId("results")).not.toBeNull();
 
-    const resultsContainer = await screen.findByTestId("results");
-    expect(resultsContainer).not.toBeNull();
-
+    // type in something, press enter key, should hide the suggestions and display corresponding results
     fireEvent.change(screen.getByRole("textbox"), {
       target: { value: "react" },
     });
-
     await act(() => {
       fireEvent.keyDown(screen.getByRole("textbox"), { keyCode: 13 });
     });
     expect(screen.queryByTestId("suggestions")).not.toBeInTheDocument();
     expect(await screen.findByTestId("results")).not.toBeNull();
 
+    // submit the form and display the results
     await act(() => {
       fireEvent.submit(screen.getByTestId("form"));
     });

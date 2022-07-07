@@ -20,6 +20,7 @@ describe("app", () => {
   });
 
   it("returns new search results on page change", async () => {
+    // axios mock resolved value for autocomplete suggestions
     let response = {
       data: { items: [{ name: "react" }, { name: "redux" }] },
     };
@@ -29,6 +30,7 @@ describe("app", () => {
       render(<App />);
     });
 
+    // change axios mock resolved value for searching
     response = {
       data: {
         total_count: 1,
@@ -48,6 +50,7 @@ describe("app", () => {
     };
     axios.get.mockResolvedValue(response);
 
+    // First time search returns results for page 1
     fireEvent.change(screen.getByRole("textbox"), {
       target: { value: "react" },
     });
@@ -56,11 +59,13 @@ describe("app", () => {
     });
     expect(screen.getByTestId("page")).toHaveTextContent("1");
 
+    // Cannot go to previous page on page 1
     await act(() => {
       fireEvent.click(screen.getAllByRole("button")[1]);
     });
     expect(screen.getByTestId("page")).toHaveTextContent("1");
 
+    // Mock resolved value for page 2
     response = {
       data: {
         total_count: 1,
@@ -80,16 +85,19 @@ describe("app", () => {
     };
     axios.get.mockResolvedValue(response);
 
+    // Navigate to page 2 using next button
     await act(() => {
       fireEvent.click(screen.getAllByRole("button")[2]);
     });
     expect(screen.getByTestId("page")).toHaveTextContent("2");
 
+    // Navigate back to page 1 using prev button
     await act(() => {
       fireEvent.click(screen.getAllByRole("button")[1]);
     });
     expect(screen.getByTestId("page")).toHaveTextContent("1");
 
+    // If no items are returned from API, ensure the correct message is displayed
     response = {
       data: {
         total_count: 0,
@@ -101,7 +109,6 @@ describe("app", () => {
     await act(() => {
       fireEvent.submit(screen.getByTestId("form"));
     });
-
     expect(screen.getByText(/No items/)).toBeInTheDocument();
   });
 });
