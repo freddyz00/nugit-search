@@ -9,8 +9,8 @@ This project utilizes the GitHub Search API that allows users to search for repo
 Clone the repository in the local workspace and install the required packages.
 
 ```
-git clone https://www.github.com/freddyz00/nugit-assignment
-cd nugit-assignment
+git clone https://www.github.com/freddyz00/nugit-search.git
+cd nugit-search
 npm install
 ```
 
