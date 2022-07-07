@@ -1,0 +1,48 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Search Result Item renders correct information 1`] = `
+<div
+  className="search-result-item"
+>
+  <h2
+    className="search-result-item__title"
+  >
+    <a
+      href="https://www.github.com"
+    >
+      <span
+        className="search-result-item__owner"
+      >
+        owner / 
+      </span>
+      <span
+        className="search-result-item__name"
+      >
+        name
+      </span>
+    </a>
+    <span
+      className="search-result-item__language"
+    >
+      JavaScript
+    </span>
+  </h2>
+  <p>
+    This is a description
+  </p>
+  <div
+    className="search-result-item__topics"
+  >
+    <a
+      href="http://www.github.com/topics/react"
+    >
+      react
+    </a>
+    <a
+      href="http://www.github.com/topics/javascript"
+    >
+      javascript
+    </a>
+  </div>
+</div>
+`;

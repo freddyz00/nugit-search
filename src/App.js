@@ -11,17 +11,18 @@ function App() {
   const [searchResults, setSearchResults] = useState([]);
   const [page, setPage] = useState(1);
 
+  // Fetch the autocomplete suggestions from the github search api using the repositories with the most stars
   useEffect(() => {
-    const fetchData = async () => {
+    const fetchAutoCompleteSuggestions = async () => {
       const { data } = await axios.get(
         "https://api.github.com/search/repositories?q=stars:>=500&per_page=100&sort=starsgazers_count&order=desc"
       );
       setAutoCompleteSuggestions(data.items.map((item) => item.name));
     };
-    fetchData();
-    console.log(autoCompleteSuggestions);
+    fetchAutoCompleteSuggestions();
   }, []);
 
+  // Create a new request to the API to get the search results when the user navigates to another page
   useEffect(() => {
     if (searchTerm && page > 0) {
       getSearchResults(searchTerm, page).then((data) => {
@@ -33,6 +34,7 @@ function App() {
 
   return (
     <div className="app">
+      {/* header title */}
       <header>
         <h1>Nugit Search</h1>
       </header>
@@ -51,22 +53,27 @@ function App() {
         <div>
           {searchResults.total_count === 0 && <p>No items match your search</p>}
           {searchResults.total_count > 0 && (
-            <p>{searchResults.total_count} results</p>
-          )}
+            <>
+              <p>{searchResults.total_count} results</p>
 
-          {searchResults.items?.map((result) => (
-            <SearchResultItem
-              key={result.id}
-              name={result.name}
-              owner={result.owner.login}
-              description={result.description}
-              language={result.language}
-              htmlUrl={result.html_url}
-              topics={result.topics}
-            />
-          ))}
+              <div data-testid="results">
+                {searchResults.items?.map((result) => (
+                  <SearchResultItem
+                    key={result.id}
+                    name={result.name}
+                    owner={result.owner.login}
+                    description={result.description}
+                    language={result.language}
+                    htmlUrl={result.html_url}
+                    topics={result.topics}
+                  />
+                ))}
+              </div>
+            </>
+          )}
         </div>
 
+        {/* Pagination */}
         {searchResults.total_count > 0 && (
           <div className="app__pagination">
             <button
@@ -78,7 +85,7 @@ function App() {
             >
               Prev
             </button>
-            <span>{page}</span>
+            <span data-testid="page">{page}</span>
             <button
               onClick={() => {
                 setPage((currentPage) => currentPage + 1);
